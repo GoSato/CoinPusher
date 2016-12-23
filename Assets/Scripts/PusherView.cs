@@ -12,15 +12,18 @@ public class PusherView : MonoBehaviour {
 
     private Transform _cachedTrans;
     private Vector3 _startPos;
+    private Rigidbody _rigid;
 
 	void Start () {
         _cachedTrans = gameObject.transform;
         _startPos = _cachedTrans.position;
+        _rigid = gameObject.GetComponent<Rigidbody>();
 	}
 
-    private int _direction = 1;
+    private int _direction = 1; // 移動方向
+    private Vector3 _amount = Vector3.zero;
 
-    void Update()
+    void FixedUpdate()
     {
         if (_cachedTrans.position.z > _startPos.z + _maxMoveDistance)
         {
@@ -31,6 +34,7 @@ public class PusherView : MonoBehaviour {
             _direction = 1;
         }
 
-         _cachedTrans.position += _cachedTrans.forward * _moveSpeed * Time.deltaTime * _direction;
+        _amount += _cachedTrans.forward * _moveSpeed * Time.deltaTime * _direction;
+        _rigid.MovePosition(_startPos + _amount);
     }
 }
